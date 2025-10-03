@@ -1,6 +1,6 @@
 import { Injectable, Inject } from '@nestjs/common';
 import type { IBooksRepository } from '../../repositories/books-repository';
-import { Book } from 'src/domain/entities/book';
+import { Book } from '../../entities/book';
 
 @Injectable()
 export class GetAllBooksUseCase {
@@ -9,7 +9,7 @@ export class GetAllBooksUseCase {
     private readonly booksRepository: IBooksRepository,
   ) {}
 
-  async execute(): Promise<Book[]> {
+  execute = async (): Promise<Book[]> => {
     return await this.booksRepository.getAll();
-  }
+  };
 }

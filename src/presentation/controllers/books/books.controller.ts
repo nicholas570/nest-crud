@@ -1,6 +1,6 @@
 import { Controller, Get } from '@nestjs/common';
-import { Book } from 'src/domain/entities/book';
-import { GetAllBooksUseCase } from 'src/domain/use-cases/books/get-all-books-use-case';
+import { Book } from '../../../domain/entities/book';
+import { GetAllBooksUseCase } from '../../../domain/use-cases/books/get-all-books-use-case';
 
 @Controller('books')
 export class BooksController {

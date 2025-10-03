@@ -16,10 +16,31 @@ describe('AppController (e2e)', () => {
     await app.init();
   });
 
-  it('/ (GET)', () => {
+  it('Get all books', () => {
     return request(app.getHttpServer())
-      .get('/')
+      .get('/books')
       .expect(200)
-      .expect('Hello World!');
+      .expect((res) => {
+        const books = res.body as Array<any>;
+        expect(books).toHaveLength(3);
+
+        // Test first book
+        expect(books[0]).toHaveProperty('id', 1);
+        expect(books[0]).toHaveProperty('title', 'Book 1');
+        expect(books[0]).toHaveProperty('author', 'Author 1');
+        expect(books[0]).toHaveProperty('publishedDate');
+
+        // Test second book
+        expect(books[1]).toHaveProperty('id', 2);
+        expect(books[1]).toHaveProperty('title', 'Book 2');
+        expect(books[1]).toHaveProperty('author', 'Author 2');
+        expect(books[1]).toHaveProperty('publishedDate');
+
+        // Test third book
+        expect(books[2]).toHaveProperty('id', 3);
+        expect(books[2]).toHaveProperty('title', 'Book 3');
+        expect(books[2]).toHaveProperty('author', 'Author 3');
+        expect(books[2]).toHaveProperty('publishedDate');
+      });
   });
 });
