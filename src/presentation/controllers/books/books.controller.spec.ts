@@ -1,11 +1,10 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { BooksController } from './books.controller';
-import { GetAllBooksUseCase } from '../../../domain/use-cases/books/get-all-books-use-case';
 import { Book } from '../../../domain/entities/book';
 
 describe('BooksController', () => {
   let controller: BooksController;
-  let getAllBooksUseCase: GetAllBooksUseCase;
+  let executeSpy: jest.SpyInstance;
 
   beforeEach(async () => {
     const mockBooks = [
@@ -14,27 +13,28 @@ describe('BooksController', () => {
       new Book(3, 'Test Book 3', 'Test Author 3', new Date()),
     ];
 
+    executeSpy = jest.fn().mockResolvedValue(mockBooks);
+
     const mockGetAllBooksUseCase = {
-      execute: jest.fn().mockResolvedValue(mockBooks),
+      execute: executeSpy,
     };
 
     const module: TestingModule = await Test.createTestingModule({
       controllers: [BooksController],
       providers: [
         {
-          provide: GetAllBooksUseCase,
+          provide: 'IGetAllBooksUseCase',
           useValue: mockGetAllBooksUseCase,
         },
       ],
     }).compile();
 
     controller = module.get<BooksController>(BooksController);
-    getAllBooksUseCase = module.get<GetAllBooksUseCase>(GetAllBooksUseCase);
   });
 
   it('should return an array of books', async () => {
     const result = await controller.getBooks();
     expect(result).toHaveLength(3);
-    expect(getAllBooksUseCase.execute).toHaveBeenCalledTimes(1);
+    expect(executeSpy).toHaveBeenCalledTimes(1);
   });
 });

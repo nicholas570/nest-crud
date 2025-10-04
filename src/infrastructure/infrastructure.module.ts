@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { BooksRepository } from './books/books-repository';
+import { BooksRepository } from './books/books.repository';
 
 @Module({
   providers: [
